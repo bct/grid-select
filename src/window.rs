@@ -19,11 +19,11 @@ use smithay_client_toolkit::{
     registry::RegistryState,
     registry_handlers,
     seat::SeatState,
-    shell::{wlr_layer::LayerSurface, WaylandSurface},
-    shm::{slot::Buffer, slot::SlotPool, Shm},
+    shell::{WaylandSurface, wlr_layer::LayerSurface},
+    shm::{Shm, slot::Buffer, slot::SlotPool},
 };
 use wayland_client::protocol::wl_keyboard;
-use wayland_client::{globals::registry_queue_init, Connection};
+use wayland_client::{Connection, globals::registry_queue_init};
 
 mod compositor;
 mod keyboard;

@@ -15,11 +15,7 @@ fn ring_diameter(ring: usize) -> usize {
 //  x x
 //   x
 fn positions_in_ring(ring: usize) -> usize {
-    if ring == 0 {
-        1
-    } else {
-        ring * 4
-    }
+    if ring == 0 { 1 } else { ring * 4 }
 }
 
 // the number of positions within the given ring and all the rings it contains
