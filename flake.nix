@@ -10,11 +10,6 @@
         inherit (nixpkgs) lib;
 
         pkgs = nixpkgs.legacyPackages.${system};
-        rpath = lib.makeLibraryPath (with pkgs; [
-          fontconfig
-          libxkbcommon
-          wayland
-        ]);
       in
       {
         packages.default = pkgs.rustPlatform.buildRustPackage {
@@ -32,10 +27,6 @@
           buildInputs = with pkgs; [
             libxkbcommon
           ];
-
-          postFixup = ''
-            patchelf $out/bin/grid-select --add-rpath ${rpath}
-          '';
         };
 
         devShells.default = pkgs.mkShell {
@@ -44,10 +35,7 @@
             cargo
             pkg-config
             libxkbcommon
-            fontconfig
           ];
-
-          LD_LIBRARY_PATH = rpath;
         };
       }
     );
