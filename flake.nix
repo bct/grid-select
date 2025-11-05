@@ -33,6 +33,10 @@
           nativeBuildInputs = with pkgs; [
             rustc
             cargo
+
+            clippy
+            rustfmt
+
             pkg-config
             libxkbcommon
           ];
