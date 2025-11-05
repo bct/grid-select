@@ -27,7 +27,7 @@ fn main() {
 
     if options.is_empty() {
         println!("no options were provided on stdin, exiting.");
-        return
+        return;
     }
 
     let (mut window, mut event_loop) = window::Window::new(config, &options).unwrap();

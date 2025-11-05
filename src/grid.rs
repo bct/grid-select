@@ -33,7 +33,7 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new(item_names: &Vec<String>) -> anyhow::Result<Grid> {
+    pub fn new(item_names: &[String]) -> anyhow::Result<Grid> {
         let dimension = spiral::sufficient_diameter(item_names.len());
         anyhow::ensure!(
             dimension <= MAX_DIMENSION,
@@ -50,7 +50,7 @@ impl Grid {
         let mut result = Grid {
             width: dimension,
             height: dimension,
-            grid: grid,
+            grid,
         };
 
         let positions = spiral::SpiralGenerator::new();
@@ -96,7 +96,7 @@ pub struct GridSpiralIterator<'a> {
     positions: spiral::SpiralGenerator,
 }
 
-impl<'a> GridSpiralIterator<'_> {
+impl GridSpiralIterator<'_> {
     pub fn new(grid: &Grid) -> GridSpiralIterator {
         GridSpiralIterator {
             grid,

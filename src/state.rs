@@ -16,10 +16,10 @@ pub struct State {
     pub rendered_cursor_position: grid::GridPosition,
 }
 
-impl<'a> State {
+impl State {
     pub fn new(grid: grid::Grid) -> State {
         State {
-            grid: grid,
+            grid,
             cursor_position: grid::GridPosition::new(0, 0),
             should_exit: false,
             needs_redraw: true,

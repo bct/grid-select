@@ -29,7 +29,7 @@ fn make_buffer(
     // Add some text!
     buffer.set_text(
         font_system,
-        &text,
+        text,
         &attrs,
         Shaping::Advanced,
         Some(Align::Center),
@@ -45,7 +45,7 @@ struct RenderedText {
 }
 
 impl RenderedText {
-    fn into_image(&self) -> raqote::Image {
+    fn as_image(&self) -> raqote::Image {
         raqote::Image {
             width: self.width,
             height: self.height,
@@ -67,7 +67,7 @@ fn render_text_centred(
 ) -> RenderedText {
     let mut dt = raqote::DrawTarget::new(space.width as i32, space.height as i32);
 
-    let buffer = make_buffer(text, font_system, font_name, font_size, scale, &space);
+    let buffer = make_buffer(text, font_system, font_name, font_size, scale, space);
 
     let run_count = buffer.layout_runs().count();
     let text_height = buffer.metrics().line_height * run_count as f32;
@@ -148,7 +148,7 @@ impl Text {
         dt.draw_image_at(
             position.x,
             position.y,
-            &rendered_text.into_image(),
+            &rendered_text.as_image(),
             &DrawOptions::default(),
         );
     }

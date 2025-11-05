@@ -109,9 +109,9 @@ pub fn draw_grid_item(
     let (item_pos, item_space) = layout::grid_position_to_screen(
         &layer_space.scale(scale),
         &di.grid_position,
-        config.item_width * scale as f32,
-        config.item_height * scale as f32,
-        config.item_margin * scale as f32,
+        config.item_width * scale,
+        config.item_height * scale,
+        config.item_margin * scale,
     );
 
     let is_selected = cursor_position == &di.grid_position;

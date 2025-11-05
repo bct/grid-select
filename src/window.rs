@@ -69,7 +69,7 @@ impl Window {
 
     pub fn new(
         config: config::Config,
-        options: &Vec<String>,
+        options: &[String],
     ) -> anyhow::Result<(Self, EventLoop<Window>)> {
         // All Wayland apps start by connecting the compositor (server).
         let conn = Connection::connect_to_env().unwrap();
@@ -150,8 +150,8 @@ impl Window {
             shm,
 
             scale,
-            width: width,
-            height: height,
+            width,
+            height,
             layer,
             keyboard: None,
 
@@ -160,7 +160,7 @@ impl Window {
             swash_cache: cosmic_text::SwashCache::new(),
         };
 
-        return Ok((window, event_loop));
+        Ok((window, event_loop))
     }
 
     // much of this implementation is borrowed from yofi under the MIT license
