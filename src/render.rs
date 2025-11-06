@@ -41,7 +41,7 @@ impl DrawableItems {
                 let normal_bg_colour = cycle_colours.next().unwrap();
                 DrawableItem::new(
                     i.position.clone(),
-                    i.value.clone(),
+                    i.display.clone(),
                     config.font_name.clone(),
                     config.font_size,
                     normal_bg_colour.clone(),

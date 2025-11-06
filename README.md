@@ -2,6 +2,20 @@ grid-select is a graphical menu for selecting an item from a small number of opt
 
 [xmonad-gridselect]: (https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-GridSelect.html)
 
+## Examples
+
+Select from a list of random strings.
+
+```sh
+tr -dc a-z </dev/urandom | fold -w5 | head -n10 | grid-select
+```
+
+Select a Roman numeral, returning the corresponding decimal number.
+
+```sh
+echo -ne "1,i\n2,ii\n3,iii\n4,iv\n5,v" | grid-select -d ,
+```
+
 ## Installation
 
 ### Nix

@@ -22,6 +22,7 @@ impl GridPosition {
 #[derive(Clone)]
 pub struct GridItem {
     pub value: String,
+    pub display: String,
     pub position: GridPosition,
 }
 
@@ -33,7 +34,7 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new(item_names: &[String]) -> anyhow::Result<Grid> {
+    pub fn new(item_names: &[(String, Option<String>)]) -> anyhow::Result<Grid> {
         let dimension = spiral::sufficient_diameter(item_names.len());
         anyhow::ensure!(
             dimension <= MAX_DIMENSION,
@@ -54,10 +55,12 @@ impl Grid {
         };
 
         let positions = spiral::SpiralGenerator::new();
-        for (item_name, pos) in item_names.iter().zip(positions) {
+        for ((item_value, item_display), pos) in item_names.iter().zip(positions) {
             let (idx_x, idx_y) = result.rel_to_abs(pos.x, pos.y).unwrap();
             let item = GridItem {
-                value: item_name.to_string(),
+                // TODO: unnecessary copies?
+                value: item_value.clone(),
+                display: item_display.clone().unwrap_or_else(|| item_value.clone()),
                 position: pos,
             };
             result.grid[idx_x][idx_y] = Some(item);
