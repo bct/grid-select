@@ -49,13 +49,19 @@ fi
 
 ### Nix
 
+Run directly (with flakes):
+
+```
+seq 10 | nix run github:bct/grid-select
+```
+
 Install to your profile without flakes:
 
 ```
 nix profile install github:bct/grid-select
 ```
 
-Or with flakes:
+Or install with flakes:
 
 ```nix
 # flake.nix
