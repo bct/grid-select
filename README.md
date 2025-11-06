@@ -4,16 +4,43 @@ grid-select is a graphical menu for selecting an item from a small number of opt
 
 ## Examples
 
-Select from a list of random strings.
+Select from a list of random strings:
 
 ```sh
 tr -dc a-z </dev/urandom | fold -w5 | head -n10 | grid-select
 ```
 
-Select a Roman numeral, returning the corresponding decimal number.
+Select a Roman numeral, returning the corresponding decimal number:
 
 ```sh
 echo -ne "1,i\n2,ii\n3,iii\n4,iv\n5,v" | grid-select -d ,
+```
+
+Switch to a selected hyprland workspace:
+
+```bash
+# this assumes that you're using ID-based workspaces that have been given a defaultName
+# e.g. config lines like:
+#
+#   workspace = 1, defaultName:mon
+
+dispatcher=workspace
+
+# open the grid select to choose a workspace.
+# only look at workspace rules with a defaultName
+json=$(hyprctl workspacerules -j | jq '.[] | select(.defaultName != null)')
+
+# produce a list of "workspaceId,defaultName" pairs
+delimited_workspaces=$(echo "$json" | jq '"\(.workspaceString),\(.defaultName)"' -r)
+
+# prompt for a workspace
+workspace_id=$(echo "$delimited_workspaces" | grid-select -d ,)
+
+# was a workspace selected?
+if [ -n "$workspace_id" ]; then
+    # switch to the selected workspace.
+    hyprctl dispatch "$dispatcher" "$workspace_id"
+fi
 ```
 
 ## Installation
@@ -46,7 +73,7 @@ Or with flakes:
           environment.systemPackages = [
             grid-select.defaultPackage.${system}
           ];
-        } 
+        }
       ];
     };
   };
