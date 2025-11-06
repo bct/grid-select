@@ -2,6 +2,8 @@ grid-select is a graphical menu for selecting an item from a small number of opt
 
 [xmonad-gridselect]: (https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-GridSelect.html)
 
+![screenshot](/screenshots/switch-workspace.png?raw=true)
+
 ## Examples
 
 Select from a list of random strings:
