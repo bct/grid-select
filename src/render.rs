@@ -4,6 +4,14 @@ use raqote::{DrawOptions, PathBuilder, Source};
 
 pub type DrawTarget<'a> = raqote::DrawTarget<&'a mut [u32]>;
 
+pub struct DrawArgs<'a> {
+    pub layer_space: &'a layout::Space,
+    pub config: &'a config::Config,
+    pub font_system: &'a mut cosmic_text::FontSystem,
+    pub swash_cache: &'a mut cosmic_text::SwashCache,
+    pub scale: f32,
+}
+
 pub struct DrawableItem {
     text: text::Text,
     pub grid_position: grid::GridPosition,
@@ -97,28 +105,24 @@ fn grid_item_rect(
 }
 
 pub fn draw_grid_item(
-    di: &DrawableItem,
-    layer_space: &layout::Space,
-    config: &config::Config,
-    cursor_position: &grid::GridPosition,
     dt: &mut DrawTarget,
-    font_system: &mut cosmic_text::FontSystem,
-    swash_cache: &mut cosmic_text::SwashCache,
-    scale: f32,
+    di: &DrawableItem,
+    cursor_position: &grid::GridPosition,
+    draw_args: &mut DrawArgs,
 ) -> (layout::ScreenPosition, layout::Space) {
     let (item_pos, item_space) = layout::grid_position_to_screen(
-        &layer_space.scale(scale),
+        &draw_args.layer_space.scale(draw_args.scale),
         &di.grid_position,
-        config.item_width * scale,
-        config.item_height * scale,
-        config.item_margin * scale,
+        draw_args.config.item_width * draw_args.scale,
+        draw_args.config.item_height * draw_args.scale,
+        draw_args.config.item_margin * draw_args.scale,
     );
 
     let is_selected = cursor_position == &di.grid_position;
 
     // render the rectangle
     grid_item_rect(
-        config,
+        draw_args.config,
         &item_pos,
         &item_space,
         is_selected,
@@ -128,16 +132,16 @@ pub fn draw_grid_item(
 
     // render the text
     let fg_colour = if is_selected {
-        &config.active_fg_colour
+        &draw_args.config.active_fg_colour
     } else {
-        &config.fg_colour
+        &draw_args.config.fg_colour
     };
 
     di.text.render_centred(
         dt,
-        font_system,
-        swash_cache,
-        scale,
+        draw_args.font_system,
+        draw_args.swash_cache,
+        draw_args.scale,
         fg_colour,
         &item_space,
         &item_pos,
@@ -147,25 +151,12 @@ pub fn draw_grid_item(
 }
 
 pub fn grid(
-    layer_space: &layout::Space,
-    config: &config::Config,
+    dt: &mut DrawTarget,
     drawable_items: &DrawableItems,
     cursor_position: &grid::GridPosition,
-    dt: &mut DrawTarget,
-    font_system: &mut cosmic_text::FontSystem,
-    swash_cache: &mut cosmic_text::SwashCache,
-    scale: f32,
+    draw_args: &mut DrawArgs,
 ) {
     for di in &drawable_items.items {
-        draw_grid_item(
-            di,
-            layer_space,
-            config,
-            cursor_position,
-            dt,
-            font_system,
-            swash_cache,
-            scale,
-        );
+        draw_grid_item(dt, di, cursor_position, draw_args);
     }
 }

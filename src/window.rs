@@ -218,6 +218,17 @@ impl Window {
             render::DrawTarget::from_backing(width, height, canvas)
         };
 
+        let mut draw_args = render::DrawArgs {
+            layer_space: &layout::Space {
+                width: self.width as f32,
+                height: self.height as f32,
+            },
+            config: &self.config,
+            font_system: &mut self.font_system,
+            swash_cache: &mut self.swash_cache,
+            scale: self.scale as f32,
+        };
+
         if self.state.needs_redraw {
             // something fundamental changed (e.g. scale factor)
             // we'll redraw the full screen.
@@ -229,17 +240,10 @@ impl Window {
             });
 
             render::grid(
-                &layout::Space {
-                    width: self.width as f32,
-                    height: self.height as f32,
-                },
-                &self.config,
+                &mut dt,
                 &self.drawable_items,
                 &self.state.cursor_position,
-                &mut dt,
-                &mut self.font_system,
-                &mut self.swash_cache,
-                self.scale as f32,
+                &mut draw_args,
             );
 
             // Damage the entire window
@@ -257,17 +261,10 @@ impl Window {
                 .at_positions(&[cursor_position, rendered_position]);
             for item in items_to_redraw {
                 let (item_pos, item_space) = render::draw_grid_item(
-                    item,
-                    &layout::Space {
-                        width: self.width as f32,
-                        height: self.height as f32,
-                    },
-                    &self.config,
-                    &self.state.cursor_position,
                     &mut dt,
-                    &mut self.font_system,
-                    &mut self.swash_cache,
-                    self.scale as f32,
+                    item,
+                    &self.state.cursor_position,
+                    &mut draw_args,
                 );
 
                 // Damage just the area we drew
