@@ -45,7 +45,7 @@ struct RenderedText {
 }
 
 impl RenderedText {
-    fn as_image(&self) -> raqote::Image {
+    fn as_image(&self) -> raqote::Image<'_> {
         raqote::Image {
             width: self.width,
             height: self.height,

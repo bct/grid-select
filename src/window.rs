@@ -70,7 +70,7 @@ impl Window {
     pub fn new(
         config: config::Config,
         options: &[(String, Option<String>)],
-    ) -> anyhow::Result<(Self, EventLoop<Window>)> {
+    ) -> anyhow::Result<(Self, EventLoop<'_, Window>)> {
         // All Wayland apps start by connecting the compositor (server).
         let conn = Connection::connect_to_env().unwrap();
 

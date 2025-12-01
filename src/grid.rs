@@ -89,7 +89,7 @@ impl Grid {
         self.grid[idx_x][idx_y].as_ref()
     }
 
-    pub fn items_iter(&self) -> GridSpiralIterator {
+    pub fn items_iter(&self) -> GridSpiralIterator<'_> {
         GridSpiralIterator::new(self)
     }
 }
@@ -100,7 +100,7 @@ pub struct GridSpiralIterator<'a> {
 }
 
 impl GridSpiralIterator<'_> {
-    pub fn new(grid: &Grid) -> GridSpiralIterator {
+    pub fn new(grid: &Grid) -> GridSpiralIterator<'_> {
         GridSpiralIterator {
             grid,
             positions: spiral::SpiralGenerator::new(),
